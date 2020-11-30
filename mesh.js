@@ -10,7 +10,7 @@ class Mesh {
   writeToObjFile() {
     let resp = "";
 
-    resp = resp.concat("# off2obj OBJ File");
+    resp = resp.concat("# off2obj OBJ File\n");
 
     this.verts.forEach((vert) => {
       resp = resp.concat(`v ${vert[0]} ${vert[1]} ${vert[2]}\n`);
@@ -19,7 +19,7 @@ class Mesh {
     resp.concat("s off\n");
 
     this.faces.forEach((face) => {
-      resp = resp.concat(`v ${face[0] + 1} ${face[1] + 1} ${face[2] + 1}\n`);
+      resp = resp.concat(`f ${face[0] + 1} ${face[1] + 1} ${face[2] + 1}\n`);
     });
 
     console.log(resp);
