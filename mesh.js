@@ -10,30 +10,21 @@ class Mesh {
   writeToObjFile() {
     let resp = "";
 
-    resp.concat("# off2obj OBJ File");
-    resp.concat("# http://johnsresearch.wordpress.com\n");
+    resp = resp.concat("# off2obj OBJ File");
 
     this.verts.forEach((vert) => {
-      resp.concat("v ");
-      resp.concat(vert[0]);
-      resp.concat(" ");
-      resp.concat(vert[1]);
-      resp.concat(" ");
-      resp.concat(vert[2]);
-      resp.concat("\n");
+      resp = resp.concat(`v ${vert[0]} ${vert[1]} ${vert[2]}\n`);
     });
 
     resp.concat("s off\n");
 
     this.faces.forEach((face) => {
-      resp.concat("f ");
-      resp.concat(face[0] + 1);
-      resp.concat(" ");
-      resp.concat(face[1] + 1);
-      resp.concat(" ");
-      resp.concat(face[2] + 1);
-      resp.concat("\n");
+      resp = resp.concat(`v ${face[0] + 1} ${face[1] + 1} ${face[2] + 1}\n`);
     });
+
+    console.log(resp);
+
+    return btoa(resp);
   }
 
   async loadFromOffFile(pathToOffFile) {
@@ -59,7 +50,8 @@ class Mesh {
 
     faceLines.forEach((faceLine) => {
       let XYZ = faceLine.trim().split(/\s+/);
-      this.faces.push(XYZ[1], XYZ[2], XYZ[3]);
+
+      this.faces.push([XYZ[1], XYZ[2], XYZ[3]]);
       if (!(parseInt(XYZ[0]) == 3)) {
         console.error(
           "ERROR: This OFF loader can only handle meshes with 3 vertex faces."
@@ -71,40 +63,6 @@ class Mesh {
         );
       }
     });
-  }
-
-  edgeList() {
-    if (this.edges != null) {
-      return this.edges;
-    }
-    this.edges = [];
-    for (i in range(0, this.nVerts)) {
-      this.edges.append([]);
-    }
-    for (let face in this.faces) {
-      let i = face[0];
-      let j = face[1];
-      let k = face[2];
-      if (!this.edges[i].includes(j)) {
-        this.edges[i].append(j);
-      }
-      if (!this.edges[i].includes(k)) {
-        this.edges[i].append(k);
-      }
-      if (!this.edges[j].includes(i)) {
-        this.edges[j].append(i);
-      }
-      if (!this.edges[j].includes(k)) {
-        this.edges[j].append(k);
-      }
-      if (!this.edges[k].includes(i)) {
-        this.edges[k].append(i);
-      }
-      if (!this.edges[k].includes(j)) {
-        this.edges[k].append(j);
-      }
-    }
-    return this.edges;
   }
 }
 
