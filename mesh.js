@@ -8,13 +8,10 @@ class Mesh {
   }
 
   writeToObjFile() {
-    console.log("write to obj file");
     let resp = "";
 
     resp.concat("# off2obj OBJ File");
     resp.concat("# http://johnsresearch.wordpress.com\n");
-
-    console.log("section", this.verts, this.faces);
 
     this.verts.forEach((vert) => {
       resp.concat("v ");
@@ -37,7 +34,6 @@ class Mesh {
       resp.concat(face[2] + 1);
       resp.concat("\n");
     });
-    console.log(resp, "saida");
   }
 
   async loadFromOffFile(pathToOffFile) {
@@ -47,12 +43,13 @@ class Mesh {
     this.nFaces = 0;
 
     let lines = pathToOffFile.split("\n");
-    let params = lines[1].split(" ");
+    let params = lines[1].trim().split(/\s+/);
 
     this.nVerts = parseInt(params[0]);
     this.nFaces = parseInt(params[1]);
 
     var vertLines = lines.slice(2, 2 + this.nVerts);
+    console.log("nVerts", this.nFaces);
     let faceLines = lines.slice(2 + this.nVerts, this.nVerts + this.nFaces);
 
     vertLines.forEach((vertLine) => {
@@ -64,10 +61,10 @@ class Mesh {
       let XYZ = faceLine.trim().split(/\s+/);
       this.faces.push(XYZ[1], XYZ[2], XYZ[3]);
       if (!(parseInt(XYZ[0]) == 3)) {
-        console.log(
+        console.error(
           "ERROR: This OFF loader can only handle meshes with 3 vertex faces."
         );
-        console.log(
+        console.error(
           "A face with",
           XYZ[0],
           "vertices is included in the file. Exiting."
