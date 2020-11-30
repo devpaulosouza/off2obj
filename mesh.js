@@ -16,10 +16,14 @@ class Mesh {
       resp = resp.concat(`v ${vert[0]} ${vert[1]} ${vert[2]}\n`);
     });
 
-    resp.concat("s off\n");
+    resp = resp.concat("s OFF\n");
 
     this.faces.forEach((face) => {
-      resp = resp.concat(`f ${face[0] + 1} ${face[1] + 1} ${face[2] + 1}\n`);
+      resp = resp.concat(
+        `f ${parseInt(face[0]) + 1} ${parseInt(face[1]) + 1} ${
+          parseInt(face[2]) + 1
+        }\n`
+      );
     });
 
     console.log(resp);
@@ -50,6 +54,8 @@ class Mesh {
 
     faceLines.forEach((faceLine) => {
       let XYZ = faceLine.trim().split(/\s+/);
+
+      console.log(XYZ);
 
       this.faces.push([XYZ[1], XYZ[2], XYZ[3]]);
       if (!(parseInt(XYZ[0]) == 3)) {
