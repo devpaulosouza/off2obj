@@ -45,7 +45,7 @@ class Mesh {
 
     var vertLines = lines.slice(2, 2 + this.nVerts);
     console.log("nVerts", this.nFaces);
-    let faceLines = lines.slice(2 + this.nVerts, this.nVerts + this.nFaces);
+    let faceLines = lines.slice(2 + this.nVerts, this.nVerts + this.nFaces + 2);
 
     vertLines.forEach((vertLine) => {
       let XYZ = vertLine.trim().split(/\s+/);
